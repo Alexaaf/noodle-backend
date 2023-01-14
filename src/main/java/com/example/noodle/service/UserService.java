@@ -5,6 +5,7 @@ import com.example.noodle.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,14 @@ public class UserService {
         return userRepository.findStudentById(id);
     }
 
+    public List <User> findByEmail(String email) {
+        List<User> u = new ArrayList<>();
+        try{
+            return userRepository.findStudentByEmail(email);
+        }catch (Exception e)
+        {
+            System.out.println(e.toString());
+            return u;
+        }
+    }
 }

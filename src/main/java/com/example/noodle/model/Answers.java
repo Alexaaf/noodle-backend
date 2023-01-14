@@ -49,6 +49,9 @@ public class Answers {
     @Column(name = "Answer10", nullable = true)
     private String answer10;
 
+    @Column(name = "course", nullable = true)
+    private String course;
+
     @Column(name = "quizId", nullable = false)
     private int quizId;
 

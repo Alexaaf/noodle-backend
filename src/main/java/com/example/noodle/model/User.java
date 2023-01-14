@@ -19,19 +19,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true )
-    private String username;
-
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = true)
-    private String role;
-
     @Column(name = "info", nullable = true)
     private String info;
 
+    @Column(name = "hash", nullable = true)
+    private String hash;
 }

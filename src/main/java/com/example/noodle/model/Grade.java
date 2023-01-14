@@ -29,4 +29,15 @@ public class Grade {
 
     @Column(name = "studentID", nullable = false)
     private String studentID;
+
+    @Override
+    public String toString() {
+        return "Grade{" +
+                "id=" + id +
+                ", course='" + course + '\'' +
+                ", date='" + date + '\'' +
+                ", grade='" + grade + '\'' +
+                ", studentID='" + studentID + '\'' +
+                '}';
+    }
 }

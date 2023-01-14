@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,9 @@ public class UserController {
     @PostMapping (value = "/addUser")
     public String addUser(@RequestBody User user)
     {
+        user.setHash(BCrypt.gensalt());
+        user.setPassword(BCrypt.hashpw(user.getPassword(), user.getHash()));
+
         try{
             userService.saveUser(user);
             return "New user added";
@@ -53,6 +58,23 @@ public class UserController {
     public List<User> getUserById(@PathVariable Long id){
         return userService.findById(id);
     }
+
+    @RequestMapping (value = "findByEmail/{email}/{password}")
+    public String getUserByEmail(@PathVariable String email, @PathVariable String password){
+        System.out.println(password);
+
+        try{
+            List<User> users = userService.findByEmail(email); //aici nu era important sa fie lista, da e mai usor de scos din DB
+            System.out.println(users.get(0).getPassword());
+            if(BCrypt.checkpw(password, users.get(0).getPassword())) //am verificat numai parola ptc da eroare daca nu exista email ul
+                return "True";
+            return "False";
+        }catch (Exception e){
+            return e.toString();
+        }
+    }
+
+
 
 //    @DeleteMapping(value = "/delete/{id}")
 //    public String deleteUser(@PathVariable long id){

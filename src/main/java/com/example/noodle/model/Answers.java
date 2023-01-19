@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -55,6 +57,21 @@ public class Answers {
     @Column(name = "quizId", nullable = false)
     private int quizId;
 
+    public List<String> convertToList(Answers answers){
+        List<String> correctAnswers = new ArrayList<>();
+        correctAnswers.add(answers.getAnswer1());
+        correctAnswers.add(answers.getAnswer2());
+        correctAnswers.add(answers.getAnswer3());
+        correctAnswers.add(answers.getAnswer4());
+        correctAnswers.add(answers.getAnswer5());
+        correctAnswers.add(answers.getAnswer6());
+        correctAnswers.add(answers.getAnswer7());
+        correctAnswers.add(answers.getAnswer8());
+        correctAnswers.add(answers.getAnswer9());
+        correctAnswers.add(answers.getAnswer10());
+
+        return correctAnswers;
+    }
     @Override
     public String toString() {
         return "Answers{" +

@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User{
+
     @Id
     @SequenceGenerator(name = "user_sequence",
             sequenceName = "user_sequence", allocationSize = 1)
@@ -29,5 +30,4 @@ public class User {
     private String info;
 
     @Column(name = "salt", nullable = true)
-    private String salt;
 }

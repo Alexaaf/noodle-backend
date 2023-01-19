@@ -34,8 +34,8 @@ public class UserController {
     @PostMapping (value = "/addUser")
     public String addUser(@RequestBody User user)
     {
-        user.setHash(BCrypt.gensalt());
-        user.setPassword(BCrypt.hashpw(user.getPassword(), user.getHash()));
+        user.setSalt(BCrypt.gensalt());
+        user.setPassword(BCrypt.hashpw(user.getPassword(), user.getSalt()));
 
         try{
             userService.saveUser(user);

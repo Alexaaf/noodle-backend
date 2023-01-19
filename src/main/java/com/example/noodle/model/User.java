@@ -28,6 +28,6 @@ public class User {
     @Column(name = "info", nullable = true)
     private String info;
 
-    @Column(name = "hash", nullable = true)
-    private String hash;
+    @Column(name = "salt", nullable = true)
+    private String salt;
 }

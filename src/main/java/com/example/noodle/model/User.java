@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User{
+
     @Id
     @SequenceGenerator(name = "user_sequence",
             sequenceName = "user_sequence", allocationSize = 1)
@@ -28,6 +29,7 @@ public class User {
     @Column(name = "info", nullable = true)
     private String info;
 
-    @Column(name = "hash", nullable = true)
+    @Column(name = "salt", nullable = true)
     private String hash;
+
 }

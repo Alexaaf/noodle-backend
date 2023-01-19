@@ -41,7 +41,6 @@ public class PersonalInformationController {
             return e.toString();
         }
     }
-
     @RequestMapping (value = "findInfoByStudentId/{id}")
     public List<PersonalInformation> getInfoByStudentId(@PathVariable Long id){
         return informationService.findById(id);

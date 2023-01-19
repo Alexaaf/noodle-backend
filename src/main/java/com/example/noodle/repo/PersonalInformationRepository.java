@@ -13,4 +13,5 @@ public interface PersonalInformationRepository extends JpaRepository<PersonalInf
     public List<PersonalInformation> findInfoById(@Param("id") long id);
     @Override
     PersonalInformation save (PersonalInformation personalInformation);
+
 }

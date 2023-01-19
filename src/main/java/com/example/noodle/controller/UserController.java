@@ -1,5 +1,6 @@
 package com.example.noodle.controller;
 
+import com.example.noodle.model.Grade;
 import com.example.noodle.model.User;
 import com.example.noodle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -25,9 +25,14 @@ public class UserController {
         return new ResponseEntity<String>("Welcome", HttpStatus.OK);
     }
 
+    @GetMapping(value = "/observer")
+    public Grade sendObserver(Grade g){
+      return  g;
+    }
+
     @GetMapping(value = "/all")
     public List<User> getUsers(){
-      return  userService.findAll();
+        return  userService.findAll();
     }
 
 
@@ -60,17 +65,21 @@ public class UserController {
     }
 
     @RequestMapping (value = "findByEmail/{email}/{password}")
-    public String getUserByEmail(@PathVariable String email, @PathVariable String password){
+    public User getUserByEmail(@PathVariable String email, @PathVariable String password){
         System.out.println(password);
-
+        User u = new User();
         try{
             List<User> users = userService.findByEmail(email); //aici nu era important sa fie lista, da e mai usor de scos din DB
             System.out.println(users.get(0).getPassword());
-            if(BCrypt.checkpw(password, users.get(0).getPassword())) //am verificat numai parola ptc da eroare daca nu exista email ul
-                return "True";
-            return "False";
+            if(BCrypt.checkpw(password, users.get(0).getPassword())){ //am verificat numai parola ptc da eroare daca nu exista email ul
+                u.setEmail(email);
+                u.setPassword(password);
+                u.setId(users.get(0).getId());
+                return u;
+            }
+            return u;
         }catch (Exception e){
-            return e.toString();
+            return u;
         }
     }
 

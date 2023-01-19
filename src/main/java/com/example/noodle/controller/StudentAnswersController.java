@@ -4,7 +4,6 @@ import com.example.noodle.model.Answers;
 import com.example.noodle.model.Grade;
 import com.example.noodle.model.StudentAnswers;
 import com.example.noodle.repo.GradeRepository;
-import com.example.noodle.repo.StudentAnswersRepository;
 import com.example.noodle.service.AnswersService;
 import com.example.noodle.service.GradeService;
 import com.example.noodle.service.StudentAnswersService;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/studentAnswers")
 @CrossOrigin
-public class StudentAnswersController {
+public class StudentAnswersController extends Observable{
 
     @Autowired
     StudentAnswersService answersService;
@@ -29,7 +28,7 @@ public class StudentAnswersController {
     GradeService gradeService;
     GradeRepository gradeRepository;
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     LocalDateTime now = LocalDateTime.now();
 
     @GetMapping(value = "/test")
@@ -44,18 +43,30 @@ public class StudentAnswersController {
 
 
     @PostMapping(value = "/addAnswers")
-    public Grade addAnswers(@RequestBody StudentAnswers answers)
-    {
+    public Grade addAnswers(@RequestBody StudentAnswers answers){
 
             int grade = 0;
+            List<String> studentAnswers = answers.convertToList(answers);
+            List<Answers> an = corectAnswersService.findAnswersByQuizId(answers.getQuizId());
+            System.out.println(an.toString());
+            List<String> correctAnswers = an.get(0).convertToList(an.get(0));
+
+            Iterator iteratorStudents = new AnswerIterator(studentAnswers);
+            Iterator iteratorCorrectAns = new AnswerIterator(correctAnswers);
             //getCorrectAnswers
-            List<Answers> a = corectAnswersService.findAnswersByQuizId(answers.getQuizId());
-            System.out.println(a);
+            while(iteratorStudents.hasNext()){
+                String studentAnswer = (String) iteratorStudents.next();
+                String correctAnswer = (String) iteratorCorrectAns.next();
+                if (studentAnswer.equalsIgnoreCase(correctAnswer)){
+                    grade++;
+                }
+            }
+            //System.out.println(a);
             System.out.println(answers);
 
             //verifyAnswers and computeComputeGrade
-            if(a.get(0).getAnswer1().equals(answers.getAnswer1()))
-                grade ++;
+            //if(a.get(0).getAnswer1().equals(answers.getAnswer1()))
+              //  grade ++;
 
             System.out.println(grade);
 
@@ -65,15 +76,15 @@ public class StudentAnswersController {
             g.setStudentID(String.valueOf(answers.getStudentId()));
             g.setDate(dtf.format(now));
             g.setGrade(String.valueOf(grade));
-            g.setCourse(a.get(0).getCourse());
+            g.setCourse(an.get(0).getCourse());
 
             System.out.println(g.toString());
             //gradeRepository.save(g);
             //gradeService.saveGrade(g);
             //saveAnswers
+            //gradeService.saveGrade(g);
             answersService.saveAnswers(answers);
             return g;
-
     }
 
     @RequestMapping (value = "findByStudentId/{id}")

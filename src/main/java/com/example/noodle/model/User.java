@@ -30,4 +30,5 @@ public class User{
     private String info;
 
     @Column(name = "salt", nullable = true)
+    private String salt;
 }
